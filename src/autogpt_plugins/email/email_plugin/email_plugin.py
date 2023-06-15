@@ -226,3 +226,26 @@ def split_imap_search_command(input_string):
     parts = [part.strip() for part in parts]
 
     return parts
+
+
+# Function to generate a response using GPT-4
+def generate_response(email):
+    # Set up your prompt
+    prompt = email["Message Body"]
+    
+    # Use the OpenAI API to generate a response
+    response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=150)
+    
+    # Return the generated response
+    return response.choices[0].text.strip()
+
+# Fetch all emails
+emails = read_emails()
+
+# Iterate through the emails
+for email in emails:
+    # Generate a response to the email
+    response = generate_response(email)
+    
+    # Use your existing send_email function to save the response to your Drafts folder
+    send_email_with_attachment_internal(email["From"], "Re: " + email["Subject"], response, None, None)
