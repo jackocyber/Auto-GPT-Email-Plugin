@@ -52,7 +52,15 @@ def read_emails(imap_folder: str = "inbox") -> None:
 
     _, search_data = conn.search(None, "UNSEEN")
 
-    for num in search_data[0].split():
+    email_ids = search_data[0].split()
+    # If there are no unread emails, print a message and return
+    if not email_ids:
+        print("No unread emails found.")
+        conn.logout()
+        return
+
+    # If there are unread emails, process them
+    for num in email_ids:
         _, msg_data = conn.fetch(num, "(BODY.PEEK[])")
         for response_part in msg_data:
             if isinstance(response_part, tuple):
