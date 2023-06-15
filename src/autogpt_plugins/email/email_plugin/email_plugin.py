@@ -43,7 +43,7 @@ def draft_response(email):
     openai.api_key = os.getenv("OPENAI_KEY")
 
     # Use the OpenAI API to generate a response.
-    response = openai.complete(**config)
+    response = openai.ChatCompletion.create(**config)
 
     # Extract the text of the response.
     response_text = response.choices[0].text.strip()
