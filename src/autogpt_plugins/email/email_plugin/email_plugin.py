@@ -11,7 +11,7 @@ from email.header import decode_header
 from email.message import EmailMessage
 import re
 
-load_dotenv()
+load_dotenv('./.env')
 
 def getSender():
     email_sender = os.getenv("EMAIL_ADDRESS")
