@@ -1,4 +1,5 @@
 import os
+import openai
 import json
 import smtplib
 import email
