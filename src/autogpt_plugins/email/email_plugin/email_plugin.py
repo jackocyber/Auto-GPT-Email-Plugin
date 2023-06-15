@@ -76,5 +76,12 @@ def imap_open(
     conn.select(imap_folder)
     return conn
 
+def bothEmailAndPwdSet() -> bool:
+    """Check if EMAIL_ADDRESS and EMAIL_PASSWORD are set in environment variables.
+    Returns:
+        bool: True if both EMAIL_ADDRESS and EMAIL_PASSWORD are set, False otherwise.
+    """
+    return 'EMAIL_ADDRESS' in os.environ and 'EMAIL_PASSWORD' in os.environ
+
 # start the process
 read_emails()
