@@ -20,35 +20,16 @@ def getPwd():
     return email_password
 
 def draft_response(email):
-    # This is a placeholder function. You'll need to replace this with
-    # your GPT model's inference function.
+    email_body = extract_email_body(email) # Your function to extract the email body
+    prompt = construct_prompt(email_body) # Your function to construct the prompt for OpenAI
 
-    # First, extract the relevant parts of the email. For example, the body text.
-    # This assumes `email` is a python email.message.Message object.
-    body_text = email.get_payload()
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=100
+    )
     
-    # Define the prompt. For example, we can use the body text of the email and ask
-    # the model to write a reply.
-    prompt = f"The email said: \n\n{body_text}\n\nWrite a reply:"
-
-    # Define the configuration for the language model.
-    config = {
-        "model": "gpt-3.5-turbo",  # Or whatever model you're using
-        "prompt": prompt,
-        "temperature": 0.6,  # This controls the randomness of the output
-        "max_tokens": 512,  # This is the maximum length of the output
-    }
-
-    # Create an OpenAI instance and set your API key.
-    openai = os.getenv("OPENAI_KEY")
-
-    # Use the OpenAI API to generate a response.
-    response = openai.complete(**config)
-
-    # Extract the text of the response.
-    response_text = response.choices[0].text.strip()
-
-    return response_text
+    return response.choices[0].text.strip() # This will get the generated response from the API.
 
 def save_draft(to: str, subject: str, body: str):
     email_sender = getSender()
