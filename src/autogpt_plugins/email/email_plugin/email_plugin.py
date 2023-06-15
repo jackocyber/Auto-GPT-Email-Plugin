@@ -33,8 +33,8 @@ def draft_response(email):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # Or whatever model you're using
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": f"The email said: \n\n{body_text}\n\nWrite a reply:"},
+            {"role": "system", "content": "You are an email writer."},
+            {"role": "user", "content": f"The email said: {body_text} Write a reply. Tone: Conversational, spartan, use less corporate jargon."},
         ],
         temperature=0.6,  # This controls the randomness of the output
         max_tokens=512,  # This is the maximum length of the output
@@ -44,7 +44,7 @@ def draft_response(email):
     response_text = response.choices[0].message['content'].strip()
 
     return response_text
-    
+
 def save_draft(to: str, subject: str, body: str):
     email_sender = getSender()
     email_password = getPwd()
