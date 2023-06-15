@@ -11,6 +11,8 @@ from email.header import decode_header
 from email.message import EmailMessage
 import re
 
+load_dotenv()
+
 def getSender():
     email_sender = os.getenv("EMAIL_ADDRESS")
     return email_sender
@@ -40,7 +42,8 @@ def draft_response(email):
     }
 
     # Create an OpenAI instance and set your API key.
-    openai.api_key = os.getenv("OPENAI_KEY")
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
     # Use the OpenAI API to generate a response.
     response = openai.ChatCompletion.create(**config)
