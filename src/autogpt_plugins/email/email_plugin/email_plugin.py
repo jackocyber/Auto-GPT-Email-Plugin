@@ -22,38 +22,29 @@ def getPwd():
     return email_password
 
 def draft_response(email):
-    # This is a placeholder function. You'll need to replace this with
-    # your GPT model's inference function.
-
-    # First, extract the relevant parts of the email. For example, the body text.
-    # This assumes `email` is a python email.message.Message object.
+    # Extract the relevant parts of the email. This assumes `email` is a python email.message.Message object.
     body_text = email.get_payload()
-    
-    # Define the prompt. For example, we can use the body text of the email and ask
-    # the model to write a reply.
-    prompt = f"The email said: \n\n{body_text}\n\nWrite a reply:"
 
-    # Define the configuration for the language model.
-    config = {
-        "model": "gpt-3.5-turbo",  # Or whatever model you're using
-        "prompt": prompt,
-        "temperature": 0.6,  # This controls the randomness of the output
-        "max_tokens": 512,  # This is the maximum length of the output
-    }
-
-    # Create an OpenAI instance and set your API key.
+    # Set your OpenAI API key.
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
-    # Use the OpenAI API to generate a response.
-    response = openai.ChatCompletion.create(**config)
+    # Generate a response using the OpenAI API. 
+    # Use the body text of the email as the user's message and ask the model to write a reply.
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # Or whatever model you're using
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": f"The email said: \n\n{body_text}\n\nWrite a reply:"},
+        ],
+        temperature=0.6,  # This controls the randomness of the output
+        max_tokens=512,  # This is the maximum length of the output
+    )
 
     # Extract the text of the response.
-    response_text = response.choices[0].text.strip()
+    response_text = response.choices[0].message['content'].strip()
 
     return response_text
-
-
+    
 def save_draft(to: str, subject: str, body: str):
     email_sender = getSender()
     email_password = getPwd()
