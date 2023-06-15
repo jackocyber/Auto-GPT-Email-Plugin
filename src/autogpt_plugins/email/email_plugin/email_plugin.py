@@ -24,6 +24,7 @@ def getPwd():
 def draft_response(email):
     # Extract the relevant parts of the email. This assumes `email` is a python email.message.Message object.
     body_text = email.get_payload()
+    print(body_text)
 
     # Set your OpenAI API key.
     openai.api_key = os.getenv("OPENAI_API_KEY")
